@@ -19,11 +19,12 @@ Currently broken:
     - We can't reasonably add entries to the got.plt, and AFL requires the following functions:
         getenv, atoi, waitpid, shmat, write, read, fork, close, _exit
 
-        We can (and do) inject these easily, as they're just syscall wrappers:
-            shmat, write, read, fork, close, _exit
+        We can (and do) inject these:
+            shmat, write, read, fork, close, _exit, atoi
 
-        The other 3 are going to need a bit of asm writing to insert.
-            This is the highest priority right now
+        We still need to implement:
+            getenv, waitpid
+
 
     - We can't safely instrument leaf functions in general, because the optimizer can choose to not actually expand a stack frame, and when we turn it into a non-leaf during instrumentation that breaks code.
 
@@ -198,7 +199,6 @@ void instr_reqs() {
     char *ptr;
     int i;
     ptr = getenv("A");
-    i = atoi(ptr);
     waitpid(1);
 }
         """

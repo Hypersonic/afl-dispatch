@@ -57,10 +57,46 @@ ret
 """
 
 # these are less easy...
-INSTR_GETENV = """
-ret
-"""
+
+# Trivial implementation plucked out of GCC:
+# int atoi(char *s) {
+#   int acc = 0;
+#   while (*s) {
+#       acc *= 10;
+#       acc += *s - '0';
+#       s++;
+#   }
+# }
 INSTR_ATOI = """
+    push   rbp
+    mov    rbp,rsp
+    mov    qword ptr [rbp-0x18],rdi
+    mov    dword ptr [rbp-0x4],0x0
+    jmp    atoi_end
+atoi_loop:
+    mov    edx,dword ptr [rbp-0x4]
+    mov    eax,edx
+    shl    eax,0x2
+    add    eax,edx
+    add    eax,eax
+    mov    dword ptr [rbp-0x4],eax
+    mov    rax,qword ptr [rbp-0x18]
+    movzx  eax,byte ptr [rax]
+    movsx  eax,al
+    sub    eax,0x30
+    add    dword ptr [rbp-0x4],eax
+    add    qword ptr [rbp-0x18],0x1
+atoi_end:
+    mov    rax,qword ptr [rbp-0x18]
+    movzx  eax,byte ptr [rax]
+    test   al,al
+    jne    atoi_loop
+    mov    eax,dword ptr [rbp-0x4]
+    pop    rbp
+    ret
+"""
+
+INSTR_GETENV = """
 ret
 """
 INSTR_WAITPID = """
@@ -75,4 +111,5 @@ INSTR_FUNCTIONS = {
         'fork': INSTR_FORK,
         'close': INSTR_CLOSE,
         'exit': INSTR_EXIT,
+        'atoi': INSTR_ATOI,
         }
