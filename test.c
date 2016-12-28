@@ -7,7 +7,6 @@
 void instr_reqs() {
     char *ptr;
     ptr = getenv("A");
-    waitpid(1);
 }
 
 

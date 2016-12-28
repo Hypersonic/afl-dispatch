@@ -199,7 +199,6 @@ void instr_reqs() {
     char *ptr;
     int i;
     ptr = getenv("A");
-    waitpid(1);
 }
         """
         print 'If you have access to the original source, adding the following function will allow us to work for now:'

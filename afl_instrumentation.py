@@ -96,10 +96,16 @@ atoi_end:
     ret
 """
 
-INSTR_GETENV = """
+# Just use the wait4 syscall with rusage = NULL and we're good
+INSTR_WAITPID = """
+xor r10, r10 # rusage = NULL
+mov rax, 61 # syscall = wait4
+syscall
 ret
 """
-INSTR_WAITPID = """
+
+# TODO
+INSTR_GETENV = """
 ret
 """
 
@@ -112,4 +118,5 @@ INSTR_FUNCTIONS = {
         'close': INSTR_CLOSE,
         'exit': INSTR_EXIT,
         'atoi': INSTR_ATOI,
+        'waitpid': INSTR_WAITPID,
         }
