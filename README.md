@@ -16,7 +16,6 @@ However, there are a few major caveats right now:
 1. We can't handle binaries with stack canaries due to a bug in Dispatch. This is pretty easily fixable, so that should be added very soon.
 
 2. We need a handful of libc functions for AFL's instrumentation to work. Right now, we patch in a handful of them, but a few are more complicated and need to be implemented. They are:
-    - `atoi` (should be pretty quick to implement)
     - `getenv`
     - `waitpid`
 
