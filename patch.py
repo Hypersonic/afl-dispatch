@@ -20,10 +20,10 @@ Currently broken:
         getenv, atoi, waitpid, shmat, write, read, fork, close, _exit
 
         We can (and do) inject these:
-            shmat, write, read, fork, close, _exit, atoi
+            shmat, write, read, fork, close, _exit, atoi, waitpid
 
         We still need to implement:
-            getenv, waitpid
+            getenv
 
 
     - We can't safely instrument leaf functions in general, because the optimizer can choose to not actually expand a stack frame, and when we turn it into a non-leaf during instrumentation that breaks code.
