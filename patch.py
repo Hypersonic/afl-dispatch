@@ -13,9 +13,6 @@ VERY, VERY PoC SCRIPT TO PATCH IN AFL SUPPORT TO x64 LINUX BINARIES
 PROBABLY DONT USE THIS FOR ANYTHING SERIOUS.
 
 Currently broken:
-    - Dispatch doesn't recognize segment offsets so stack canaries become broken if we instrument on them.
-        Should figure out fixing this ASAP (since instrumenting a binary plucked out of /bin is cool for demos)
-
     - We can't reasonably add entries to the got.plt, and AFL requires the following functions:
         getenv, atoi, waitpid, shmat, write, read, fork, close, _exit
 
@@ -79,7 +76,11 @@ def find_patch_addr(bb):
         """
         Tell us if an `Instruction` is movable during a patch
         """
-        return not ins.references_ip() and not ins.references_sp() and not ins.is_jump() and not ins.is_call()
+        return not ins.references_ip() and \
+               not ins.references_sp() and \
+               not ins.is_jump() and \
+               not ins.is_call() and \
+               not ins.references_seg_reg() # TODO: don't require checking the seg_reg, this is waiting on a Keystone assembly bug
 
     # we can't safely hook basic blocks that are a CFG leaf because
     # the optimizer may choose to not generate an actual stack frame for it.

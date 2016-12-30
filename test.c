@@ -7,6 +7,7 @@
 void instr_reqs() {
     char *ptr;
     ptr = getenv("A");
+    waitpid(1);
 }
 
 
@@ -169,12 +170,14 @@ void hexenc(char *buf, size_t len) {
 
 int main() {
     fizzbuzz();
-    lol(24);
     printf("Hi and welcome to the tester\n");
-    char buf[100];
-    if (read(0, buf, sizeof(buf)) < sizeof(buf)) {
+    char buf[10];
+    if (read(0, buf, sizeof(buf)-1) < sizeof(buf)-1) {
         printf(">_> ENTER THE RIGHT AMOUNT.\n");
         exit(1);
     }
+    int n = strtol(buf, NULL, 0);
+    printf("n is %d\n", n);
+    lol(n);
     hexenc(buf, sizeof(buf));
 }
