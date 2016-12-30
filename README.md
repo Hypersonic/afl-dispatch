@@ -18,3 +18,4 @@ However, there are a few major caveats right now:
 
 2. This only works on x86\_64 Linux ELFs right now, but the switch to other platforms and architectures is mostly a matter of having instrumentation available for the platforms. 
 
+3. The way we instrument totally breaks under grsec/PaX, so you can't use it on systems with those protections enabled.

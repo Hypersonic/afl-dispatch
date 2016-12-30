@@ -22,6 +22,8 @@ Currently broken:
         We still need to implement:
             getenv
 
+    - grsec/PaX systems can't run because of W^X, and we inject data into the same page as code. This can probably be fixed, but you should have control of the systems you're fuzzing on, so it's not a huge issue right now.
+
 
     - We can't safely instrument leaf functions in general, because the optimizer can choose to not actually expand a stack frame, and when we turn it into a non-leaf during instrumentation that breaks code.
 
